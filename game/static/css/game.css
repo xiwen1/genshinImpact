@@ -8,7 +8,7 @@
 .xiwen-game-menu-field {
     width: 20vh;
     position: relative;
-    top: 40%;
+    top: 35%;
     left: 20%;
 }
 
@@ -24,7 +24,7 @@
     cursor: pointer;
     padding: 0.5vh;
     text-align: center;
-    
+
 }
 
 .xiwen-game-menu-item:hover {

@@ -3,6 +3,7 @@ class xiwenGameMenu {
         this.root = root;
         this.$menu = $(`
 <div class="xiwen-game-menu">
+        <br>
     <h1 style="text-align: center; color: white">zkw's咒术回战</h1>
     <a href="whu"><h3 style="text-align: center; color: olive">ad:点此进入武大传送门，欢迎报考武汉大学！</h3></a>
     <div class="xiwen-game-menu-field">
