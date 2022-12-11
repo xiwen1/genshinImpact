@@ -1,18 +1,18 @@
+
 <!doctype html>
 <html class="no-js" lang="en">
-
+	<!-- {% load static %} -->
     <head>
 		<script src="assets/js/dynamic.js"></script>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://cdn.acwing.com/static/jquery-ui-dist/jquery-ui.min.css">
+
 		
 		
         <title>欢迎来到武汉大学！</title>
-		
-		<link href="01.css" rel="stylesheet">
 		<link rel="shortcut icon" href="https://www.whu.edu.cn/favicon.ico">        
-        <link rel="stylesheet" href="assets/css/style.css">
     </head>
 	
 	<body>
@@ -785,7 +785,7 @@ span.single-line-horizontal {width: 88px;}
 		</style>
 		<header class="top-area">
 				<nav class="mynav nav1 mynav-fixed">
-			                <a class="mynav-brand" href="https://www.whu.edu.cn/"><img src="whu.png" width="130" height="60"></a>
+			                <a class="mynav-brand" href="https://www.whu.edu.cn/"><img src="{% static 'image/whu.png'%}" width="130" height="60"></a>
 	
 			            <div id="mynav-menu">
                             <p><!--wwjnb-->

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 import os
 from app.settings import BASE_DIR
-file_path = os.path.join(BASE_DIR, 'game/templates/index.html')
+file_path = os.path.join(BASE_DIR, 'game/templates/multiends/index.html')
 
 
 f = open(file_path, 'r')
