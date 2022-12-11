@@ -1,7 +1,7 @@
 
 <!doctype html>
 <html class="no-js" lang="en">
-	<!-- {% load static %} -->
+	{% load static %}
     <head>
 		<script src="assets/js/dynamic.js"></script>
         <meta charset="utf-8">
@@ -295,7 +295,7 @@ nav.mynav.nav1 .mynav-color i{color: #124e34;}
     align-items: center;
     justify-content: center;
     position:relative;
-    background:url(../images/about/welcome-banner.jpg)no-repeat;
+    background:url(https://www.whu.edu.cn/images/2022112401.jpg) no-repeat;
     background-size:cover;
     background-position: center;
     height:600px;
@@ -785,9 +785,9 @@ span.single-line-horizontal {width: 88px;}
 		</style>
 		<header class="top-area">
 				<nav class="mynav nav1 mynav-fixed">
-			                <a class="mynav-brand" href="https://www.whu.edu.cn/"><img src="{% static 'image/whu.png'%}" width="130" height="60"></a>
-	
-			            <div id="mynav-menu">
+			                <a class="mynav-brand" href="https://www.whu.edu.cn/"><img src="static/image/whu.png" width="130" height="60"></a>
+							<!-- {% static 'image/whu.png'%} -->
+							<div id="mynav-menu">
                             <p><!--wwjnb-->
                                 <ul class="nav mynav-nav" data-in="fadeInDown" data-out="fadeOutUp">
                                     <li></li>
@@ -969,14 +969,14 @@ span.single-line-horizontal {width: 88px;}
 	<br><br><br><br>
 	<div id="ppt1">
 		<div id="ppt2">
-			<button onclick="pica()"><img class="justi" src="assets/images/about/xingzhenglou.png" /></button>
-			<button onclick="picb()"><img class="justi" src="assets/images/about/laotushuguan.jpg" /></button>
-			<button onclick="picc()"><img class="justi" src="assets/images/about/pailou.jpg" /></button>
-			<button onclick="picd()"><img class="justi" src="assets/images/about/songqingguan.jpg" /></button>
-			<button onclick="pice()"><img class="justi" src="assets/images/about/laolixuelou.jpg" /></button>
-			<button onclick="pice()"><img class="justi" src="assets/images/about/kunpengguangchang.png" /></button>
-			<button onclick="pica()"><img class="justi" src="assets/images/about/xingzhenglou.png" /></button>
-			<button onclick="picb()"><img class="justi" src="assets/images/about/laotushuguan.jpg" /></button>
+			<button onclick="pica()"><img class="justi" src="{% static 'whu_image/about/xingzhenglou.png'%}" /></button>
+			<button onclick="picb()"><img class="justi" src="{% static 'whu_image/about/laotushuguan.jpg'%}" /></button>
+			<button onclick="picc()"><img class="justi" src="{% static 'whu_image/about/pailou.jpg'%}" /></button>
+			<button onclick="picd()"><img class="justi" src="{% static 'whu_image/about/songqingguan.jpg'%}" /></button>
+			<button onclick="pice()"><img class="justi" src="{% static 'whu_image/about/laolixuelou.jpg'%}" /></button>
+			<button onclick="pice()"><img class="justi" src="{% static 'whu_image/about/kunpengguangchang.png'%}" /></button>
+			<button onclick="pica()"><img class="justi" src="{% static 'whu_image/about/xingzhenglou.png'%}" /></button>
+			<button onclick="picb()"><img class="justi" src="{% static 'whu_image/about/laotushuguan.jpg'%}" /></button>
 		</div>
 	</div>
 
@@ -1006,7 +1006,7 @@ span.single-line-horizontal {width: 88px;}
 					<div class="sm-pics">
 						<div class="single-about-img">
 							<a href="https://baike.baidu.com/item/%E6%AD%A6%E6%B1%89%E5%A4%A7%E5%AD%A6%E8%A1%8C%E6%94%BF%E6%A5%BC?fromModule=lemma_search-box" target="_blank">
-							<img src="assets/images/about/xingzhenglou.png">
+							<img src="{% static 'whu_image/about/xingzhenglou.png'%}">
 						</a>
 							<div class="hoverButton">
 								<ul>
@@ -1050,7 +1050,7 @@ span.single-line-horizontal {width: 88px;}
 						<div class="sm-pics">
 							<div class="single-about-img">
 								<a href="https://baike.baidu.com/item/%E6%AD%A6%E6%B1%89%E5%A4%A7%E5%AD%A6%E8%80%81%E5%9B%BE%E4%B9%A6%E9%A6%86?fromModule=lemma_search-box" target="_blank">								
-								<img src="assets/images/about/laotushuguan.jpg">
+								<img src="{% static 'whu_image/about/laotushuguan.jpg'%}">
 								</a>
 								<div class="hoverButton">
 									<ul>
@@ -1092,7 +1092,7 @@ span.single-line-horizontal {width: 88px;}
 					<div class="sm-pics">
 						<div class="single-about-img">
 							<a href="https://baike.baidu.com/item/%E6%AD%A6%E6%B1%89%E5%A4%A7%E5%AD%A6%E7%89%8C%E6%A5%BC/3271452?fr=aladdin" target="_blank">
-							<img src="assets/images/about/pailou.jpg">
+							<img src="{% static 'whu_image/about/pailou.jpg'%}">
 						</a>
 							<div class="hoverButton">
 								<ul>
@@ -1132,7 +1132,7 @@ span.single-line-horizontal {width: 88px;}
 						<div class="sm-pics">
 							<div class="single-about-img">
 								<a href="https://baike.baidu.com/item/%E5%AE%8B%E5%8D%BF%E4%BD%93%E8%82%B2%E9%A6%86?fromModule=lemma_search-box" target="_blank">
-								<img src="assets/images/about/songqingguan.jpg">
+								<img src="{% static 'whu_image/about/songqingguan.jpg'%}">
 							</a>
 								<div class="hoverButton">
 									<ul>
@@ -1173,7 +1173,7 @@ span.single-line-horizontal {width: 88px;}
 					<div class="sm-pics">
 						<div class="single-about-img">
 							<a href="https://baike.baidu.com/item/%E7%90%86%E5%AD%A6%E6%A5%BC/3741779?fr=aladdin" target="_blank">
-							<img src="assets/images/about/laolixuelou.jpg">
+							<img src="{% static 'whu_image/about/laolixuelou.jpg'%}">
 						</a>
 							<div class="hoverButton">
 								<ul>
@@ -1213,7 +1213,7 @@ span.single-line-horizontal {width: 88px;}
 						<div class="sm-pics">
 							<div class="single-about-img">
 								<a href="https://baike.baidu.com/item/%E9%B2%B2%E9%B9%8F%E5%B9%BF%E5%9C%BA/3271962?fromModule=lemma-qiyi_sense-lemma" target="_blank">
-								<img src="assets/images/about/kunpengguangchang.png">
+								<img src="{% static 'whu_image/about/kunpengguangchang.png'%}">
 							</a>
 								<div class="hoverButton">
 									<ul>
@@ -1253,7 +1253,7 @@ span.single-line-horizontal {width: 88px;}
 									</div>
 									<div class="faculty-block-overlay">
 										<div class="faculty-text">
-											<a href="https://www.whu.edu.cn/jgsz/yxsz.htm" target="_blank"><img src="assets/images/faculty/xinbu.webp"></a><!--插入图片-->
+											<a href="https://www.whu.edu.cn/jgsz/yxsz.htm" target="_blank"><img src="assets/images/faculty/xinbu.webp" alt="信息学部"></a><!--插入图片-->
 											<div class="faculty-name"><b>信息科学学部</b></div>
 										</div>
 									</div>
@@ -1926,7 +1926,7 @@ span.single-line-horizontal {width: 88px;}
 
 												<h2>2000 - 至今</h2>
 												<h3>武汉大学</h3><br>
-												<h4><img src="assets\images\experience\WHU.jpg" alt="WHU.jpg" id="WHU"></h4>
+												<h4><img src="{% static 'whu_image/experience\WHU.jpg'%}" alt="WHU.jpg" id="WHU"></h4>
 											</div><!--/.jianjie-->
 										</div>
 										<div class="collegenav timecol">
@@ -1956,7 +1956,7 @@ span.single-line-horizontal {width: 88px;}
 													1950-2000
 												</h2>
 												<h3>武汉大学</h3><br>
-												<h4><img src="assets\images\experience\whdx.jpg" alt="whdx.jpg" class="experience-photos"></h4>
+												<h4><img src="{% static 'whu_image/experience\whdx.jpg'%}" alt="whdx.jpg" class="experience-photos"></h4>
 											</div><!--/.jianjie-->
 										</div>
 										<div class="timecol">
@@ -1978,7 +1978,7 @@ span.single-line-horizontal {width: 88px;}
 													1950-2000
 												</h2>
 												<h3>武汉大学</h3><br>
-												<h4><img src="assets\images\experience\whdx.jpg" alt="whdx.jpg" class="experience-photos"></h4>
+												<h4><img src="{% static 'whu_image/experience\whdx.jpg'%}" alt="whdx.jpg" class="experience-photos"></h4>
 											</div><!--/.jianjie-->
 										</div>
 									</div>
@@ -1992,7 +1992,7 @@ span.single-line-horizontal {width: 88px;}
 											<div class="jianjie text-right">
 												<h2>1928-1950</h2>
 												<h3>国立武汉大学</h3>
-												<h4><img src="assets\images\experience\glwhu.jpg" alt="guoliwhu.jpg" class="experience-photos"></h4>
+												<h4><img src="{% static 'whu_image/experience\glwhu.jpg'%}" alt="guoliwhu.jpg" class="experience-photos"></h4>
 											</div><!--/.jianjie-->
 										</div>
 										<div class="collegenav timecol">
@@ -2042,7 +2042,7 @@ span.single-line-horizontal {width: 88px;}
 													1926-1927
 												</h2>
 												<h3>国立武昌中山大学（国立第二中山大学）</h3><br>
-												<h4><img src="assets\images\experience\glwczsdx.jpg" alt="glwczsdx.jpg" class="experience-photos"></h4>
+												<h4><img src="{% static 'whu_image/experience\glwczsdx.jpg'%}" alt="glwczsdx.jpg" class="experience-photos"></h4>
 											</div><!--/.jianjie-->
 										</div>
 									</div>
@@ -2056,7 +2056,7 @@ span.single-line-horizontal {width: 88px;}
 											<div class="jianjie text-right">
 												<!--     1111111111111    						--> <h2>1923-1925</h2>
 												<h3>国立武昌师范大学</h3><br>
-												<h4><img src="assets\images\experience\glwcsfdx.jpg" alt="glwcsfdx.jpg" class="experience-photos"></h4>
+												<h4><img src="{% static 'whu_image/experience\glwcsfdx.jpg'%}" alt="glwcsfdx.jpg" class="experience-photos"></h4>
 											</div><!--/.jianjie-->
 										</div>
 										<div class="collegenav timecol">
@@ -2104,7 +2104,7 @@ span.single-line-horizontal {width: 88px;}
 													1913-1923
 												</h2>
 												<h3>国立武昌高等师范学校</h3><br>
-												<h4><img src="assets\images\experience\glwcgs.jpg" alt="glwcgs.jpg" class="experience-photos"></h4>
+												<h4><img src="{% static 'whu_image/experience\glwcgs.jpg'%}" alt="glwcgs.jpg" class="experience-photos"></h4>
 											</div><!--/.jianjie-->
 										</div>
 									</div>
@@ -2118,7 +2118,7 @@ span.single-line-horizontal {width: 88px;}
 											<div class="jianjie text-right">
 												<h2>1902-1911</h2>
 												<h3>湖北方言学堂</h3><br><br>
-												<h4><img src="assets\images\experience\hbfyxt.jpg" alt="hbfyxt.jpg" class="experience-photos"></h4>
+												<h4><img src="{% static 'whu_image/experience\hbfyxt.jpg'%}" alt="hbfyxt.jpg" class="experience-photos"></h4>
 											</div><!--/.jianjie-->
 										</div>
 										<div class="collegenav timecol">
@@ -2168,7 +2168,7 @@ span.single-line-horizontal {width: 88px;}
 													1893-1902
 												</h2>
 												<h3>湖北自强学堂</h3><br>
-												<h4><img src="assets\images\experience\zqxt.jpg" alt="zqxt.jpg" class="experience-photos"></h4>
+												<h4><img src="{% static 'whu_image/experience\zqxt.jpg'%}" alt="zqxt.jpg" class="experience-photos"></h4>
 											</div>
 										</div>
 									</div>
