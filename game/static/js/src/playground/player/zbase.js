@@ -10,7 +10,7 @@ class Player extends xiwenGameObject {
         this.damage_x = 0;
         this.damage_y = 0;
         this.damage_speed = 0;
-        this.friction = 0.82;
+        this.friction = 0.96;
         this.radius = radius;
         this.color = color;
         this.speed = speed;
@@ -63,7 +63,7 @@ class Player extends xiwenGameObject {
         let color = "orange";
         let speed = this.playground.height * 0.6;
         let move_length = this.playground.height * 1.5;
-        new FireBall(this.playground, this, x, y, vx, vy, radius, color, speed, move_length, this.playground.height * 0.008 );
+        new FireBall(this.playground, this, x, y, vx, vy, radius, color, speed, move_length, this.playground.height * 0.006 );
 
     }
 
@@ -75,7 +75,8 @@ class Player extends xiwenGameObject {
         }
         this.damage_x = Math.cos(angle);
         this.damage_y = Math.sin(angle);
-        this.damage_speed = damage * 100;
+        this.damage_speed = damage * 120;
+        this.speed *= 1.15;
     }
 
     get_dist(x1, x2, y1, y2){
@@ -92,13 +93,17 @@ class Player extends xiwenGameObject {
     }
 
     update() {
-        if(this.damage_speed > this.eps) {
+        if(this.damage_speed > this.eps*30) {
             this.vx = this.vy = 0;
             this.move_length = 0;
-            this.x += this.damage_x * this.damage_speed * this.timedelta / 1000;
-            this.y += this.damage_y * this.damage_speed * this.timedelta / 1000;
+            this.x += this.damage_x * this.damage_speed * this.timedelta / 1000*1.5;
+            this.y += this.damage_y * this.damage_speed * this.timedelta / 1000*1.5;
             this.damage_speed *= this.friction;
         } else{
+            if(Math.random() < 1/300 && !this.is_me){
+                let player = this.playground.players[0];
+                this.shoot_fireball(player.x, player.y);
+            }
             if(this.move_length < this.eps){
                 this.move_length = 0;
                 this.vx = 0;
