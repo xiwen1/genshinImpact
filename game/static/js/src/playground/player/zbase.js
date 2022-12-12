@@ -7,6 +7,10 @@ class Player extends xiwenGameObject {
         this.y = y;
         this.vx = 0;
         this.vy = 0;
+        this.damage_x = 0;
+        this.damage_y = 0;
+        this.damage_speed = 0;
+        this.friction = 0.82;
         this.radius = radius;
         this.color = color;
         this.speed = speed;
@@ -20,6 +24,10 @@ class Player extends xiwenGameObject {
     start() {
         if(this.is_me) {
             this.add_listening_events();
+        } else {
+            let tx = Math.random() * this.playground.width;
+            let ty = Math.random() * this.playground.height;
+            this.move_to(tx, ty);
         }
     }
 
@@ -55,8 +63,19 @@ class Player extends xiwenGameObject {
         let color = "orange";
         let speed = this.playground.height * 0.6;
         let move_length = this.playground.height * 1.5;
-        new FireBall(this.playground, this, x, y, vx, vy, radius, color, speed, move_length);
+        new FireBall(this.playground, this, x, y, vx, vy, radius, color, speed, move_length, this.playground.height * 0.008 );
 
+    }
+
+    is_attacked(angle, damage) {
+        this.radius -= damage;
+        if(this.radius < 10) {
+            this.destroy();
+            return false;
+        }
+        this.damage_x = Math.cos(angle);
+        this.damage_y = Math.sin(angle);
+        this.damage_speed = damage * 100;
     }
 
     get_dist(x1, x2, y1, y2){
@@ -66,24 +85,38 @@ class Player extends xiwenGameObject {
     }
 
     move_to(tx, ty) {
-        this.move_length = this.get_dist(tx, ty, this.x, this.y);
+        this.move_length = this.get_dist(tx, this.x, ty, this.y);
         this.angle = Math.atan2(ty - this.y, tx - this.x);
         this.vx = Math.cos(this.angle);
         this.vy = Math.sin(this.angle);
     }
 
     update() {
-        if(this.move_length < this.eps){
+        if(this.damage_speed > this.eps) {
+            this.vx = this.vy = 0;
             this.move_length = 0;
-            this.vx = 0;
-            this.vy = 0;
-        } else {
-            let unit = this.speed*this.timedelta / 1000;
-            let moved = Math.min(this.move_length, unit);
-            this.x += this.vx*moved;
-            this.y += this.vy*moved;
-            this.move_length -= moved;
+            this.x += this.damage_x * this.damage_speed * this.timedelta / 1000;
+            this.y += this.damage_y * this.damage_speed * this.timedelta / 1000;
+            this.damage_speed *= this.friction;
+        } else{
+            if(this.move_length < this.eps){
+                this.move_length = 0;
+                this.vx = 0;
+                this.vy = 0;
+                if(!this.is_me) {
+                    let tx = Math.random() * this.playground.width;
+                    let ty = Math.random() * this.playground.height;
+                    this.move_to(tx, ty);
+                }
+            } else {
+                let unit = this.speed*this.timedelta / 1000;
+                let moved = Math.min(this.move_length, unit);
+                this.x += this.vx*moved;
+                this.y += this.vy*moved;
+                this.move_length -= moved;
+            }
         }
+        
         this.render();
     }
 
