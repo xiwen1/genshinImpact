@@ -129,6 +129,9 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # 同理
 MEDIA_URL = '/media/' 
 
+WHU_FACULTY_ROOT =  os.path.join(BASE_DIR, 'static/whu_image/faculty')
+WHU_FACULTY_URL = '/assets/images/faculty/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
