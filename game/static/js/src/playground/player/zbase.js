@@ -24,6 +24,8 @@ class Player extends xiwenGameObject {
         this.iced_speed = this.speed * 0.6;
         this.const_speed = this.speed;
         this.const_color = this.color;
+        this.const_radius = this.radius;
+        this.hitted_fireball = 0;
 
         this.cur_skill = null;
     }
@@ -68,14 +70,40 @@ class Player extends xiwenGameObject {
     }
 
     shoot_fireball(tx, ty) {
+        console.log(this.hitted_fireball);
+        if(this.hitted_fireball <= 2) {
+            let x = this.x, y = this.y;
+            let radius = this.playground.height * 0.01;
+            let angle = Math.atan2(ty - this.y, tx - this.x);
+            let vx = Math.cos(angle), vy = Math.sin(angle);
+            let color = "orange";
+            let speed = this.playground.height * 0.6;
+            let move_length = this.playground.height * 1.5;
+            new FireBall(this.playground, this, x, y, vx, vy, radius, color, speed, move_length, this.playground.height * 0.0042 );
+        } else {
+            this.hitted_fireball = 0;
+            this.shoot_sentence_ball(tx, ty);
+            
+        }
+    }
+
+    shoot_sentence_ball(tx, ty) {
         let x = this.x, y = this.y;
         let radius = this.playground.height * 0.01;
         let angle = Math.atan2(ty - this.y, tx - this.x);
         let vx = Math.cos(angle), vy = Math.sin(angle);
         let color = "orange";
-        let speed = this.playground.height * 0.6;
-        let move_length = this.playground.height * 1.5;
-        new FireBall(this.playground, this, x, y, vx, vy, radius, color, speed, move_length, this.playground.height * 0.0042 );
+        let speed = this.playground.height * 0.8;
+        let move_length = this.playground.height * 1.8;
+        let angle_1 = angle*1.1;
+        let angle_2 = angle*0.9;
+        let vx_1 = Math.cos(angle_1);
+        let vy_1 = Math.sin(angle_1);
+        let vx_2 = Math.cos(angle_2);
+        let vy_2 = Math.sin(angle_2);
+        new Sentence_ball(this.playground, this, x, y, vx, vy, radius, color, speed, move_length, this.playground.height * 0.0042)
+        new Sentence_ball(this.playground, this, x, y, vx_1, vy_1, radius, color, speed, move_length, this.playground.height * 0.0042)
+        new Sentence_ball(this.playground, this, x, y, vx_2, vy_2, radius, color, speed, move_length, this.playground.height * 0.0042)        
     }
 
     shoot_iceball(tx, ty) {
@@ -208,6 +236,9 @@ class Player extends xiwenGameObject {
             this.vy = -this.vy;
             this.damage_speed = 0;
 
+        }
+        if(this.radius < this.const_radius/3){
+            this.destroy();
         }
         
         this.render();

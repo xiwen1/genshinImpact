@@ -15,7 +15,6 @@ class Balls extends xiwenGameObject {
         this.move_length = move_length;
         this.eps = 0.1;
         this.type = "fireball";
-        this.const_radius = radius;
     }
 
     is_collision(player) {
@@ -43,8 +42,7 @@ class Balls extends xiwenGameObject {
     }
 
     update() {
-        if(this.radius < this.const_radius/2){
-            console.log(this.const_radius, this.radius)
+        if(this.move_length < this.eps){
             this.destroy();
             return false;
         }
