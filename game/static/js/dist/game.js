@@ -19,7 +19,7 @@ class xiwenGameMenu {
     </div>
 </div>
         `)
-        this.$menu.hide();
+        //this.$menu.hide();
         this.root.$xiwen_game.append(this.$menu);
         this.$single_mode = this.$menu.find('.xiwen-game-menu-item-single-mode');
         this.$multi_mode = this.$menu.find('.xiwen-game-menu-item-multi-mode');
@@ -36,7 +36,7 @@ class xiwenGameMenu {
         let outer = this; //保存一下Menu对象
         this.$single_mode.click(function() {
             outer.hide();
-            outer.root.playground.show("single mode");
+            outer.root.playground.show();
         });
         this.$multi_mode.click(function(){
             outer.hide();
@@ -481,9 +481,10 @@ class GameMap extends xiwenGameObject {
 }class xiwenGamePlayground {
     constructor(root) {
         this.root = root;
+
         this.$playground = $(`<div class="xiwen-game-playground"></div>`);
 
-        //this.hide();
+        this.hide();
         this.root.$xiwen_game.append(this.$playground);
         this.width = this.$playground.width();
         this.height = this.$playground.height();
@@ -514,7 +515,7 @@ export class xiwenGame {
     constructor(id) {
         this.id = id; 
         this.$xiwen_game = $("#" + id);
-        // this.menu = new xiwenGameMenu(this);
+        this.menu = new xiwenGameMenu(this);
         this.playground = new xiwenGamePlayground(this);
         // this.settings = new this.xiwenGameSettings(this);
 

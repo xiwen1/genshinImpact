@@ -19,7 +19,7 @@ class xiwenGameMenu {
     </div>
 </div>
         `)
-        this.$menu.hide();
+        //this.$menu.hide();
         this.root.$xiwen_game.append(this.$menu);
         this.$single_mode = this.$menu.find('.xiwen-game-menu-item-single-mode');
         this.$multi_mode = this.$menu.find('.xiwen-game-menu-item-multi-mode');
@@ -36,7 +36,7 @@ class xiwenGameMenu {
         let outer = this; //保存一下Menu对象
         this.$single_mode.click(function() {
             outer.hide();
-            outer.root.playground.show("single mode");
+            outer.root.playground.show();
         });
         this.$multi_mode.click(function(){
             outer.hide();

@@ -1,9 +1,10 @@
 class xiwenGamePlayground {
     constructor(root) {
         this.root = root;
+
         this.$playground = $(`<div class="xiwen-game-playground"></div>`);
 
-        //this.hide();
+        this.hide();
         this.root.$xiwen_game.append(this.$playground);
         this.width = this.$playground.width();
         this.height = this.$playground.height();
