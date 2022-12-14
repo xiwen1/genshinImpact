@@ -26,8 +26,18 @@ class Player extends xiwenGameObject {
         this.const_color = this.color;
         this.const_radius = this.radius;
         this.hitted_fireball = 0;
-
+        this.base_cd = 1;
+        this.fireball_cd = this.base_cd;
+        this.fireball_getting_time = 0;
+        this.iceball_cd = this.base_cd * 1.5;
+        this.iceball_getting_time = 0;
+        this.fireball_max = 3;
+        this.iceball_max = 2;
+        this.cur_fireball = 0;
+        this.cur_iceball = 0;
         this.cur_skill = null;
+        this.fireball_counter = null;
+        this.iceball_counter = null;
     }
 
     start() {
@@ -70,21 +80,26 @@ class Player extends xiwenGameObject {
     }
 
     shoot_fireball(tx, ty) {
-        console.log(this.hitted_fireball);
-        if(this.hitted_fireball <= 2) {
-            let x = this.x, y = this.y;
-            let radius = this.playground.height * 0.01;
-            let angle = Math.atan2(ty - this.y, tx - this.x);
-            let vx = Math.cos(angle), vy = Math.sin(angle);
-            let color = "orange";
-            let speed = this.playground.height * 0.6;
-            let move_length = this.playground.height * 1.5;
-            new FireBall(this.playground, this, x, y, vx, vy, radius, color, speed, move_length, this.playground.height * 0.0042 );
+        if(this.cur_fireball < 0.99) {
+            return false;
         } else {
-            this.hitted_fireball = 0;
-            this.shoot_sentence_ball(tx, ty);
-            
+            if(this.hitted_fireball < 2) {
+                let x = this.x, y = this.y;
+                let radius = this.playground.height * 0.01;
+                let angle = Math.atan2(ty - this.y, tx - this.x);
+                let vx = Math.cos(angle), vy = Math.sin(angle);
+                let color = "orange";
+                let speed = this.playground.height * 0.6;
+                let move_length = this.playground.height * 1.5;
+                new FireBall(this.playground, this, x, y, vx, vy, radius, color, speed, move_length, this.playground.height * 0.0042 );
+            } else {
+                this.hitted_fireball = 0;
+                this.shoot_sentence_ball(tx, ty);
+                
+            }
+            this.cur_fireball --;
         }
+        
     }
 
     shoot_sentence_ball(tx, ty) {
@@ -95,8 +110,8 @@ class Player extends xiwenGameObject {
         let color = "orange";
         let speed = this.playground.height * 0.8;
         let move_length = this.playground.height * 1.8;
-        let angle_1 = angle*1.1;
-        let angle_2 = angle*0.9;
+        let angle_1 = angle+0.1;
+        let angle_2 = angle-0.1;
         let vx_1 = Math.cos(angle_1);
         let vy_1 = Math.sin(angle_1);
         let vx_2 = Math.cos(angle_2);
@@ -107,14 +122,20 @@ class Player extends xiwenGameObject {
     }
 
     shoot_iceball(tx, ty) {
-        let x = this.x, y = this.y;
-        let radius = this.playground.height * 0.01;
-        let angle = Math.atan2(ty - this.y, tx - this.x);
-        let vx = Math.cos(angle), vy = Math.sin(angle);
-        let color = "orange";
-        let speed = this.playground.height * 0.6;
-        let move_length = this.playground.height * 2;
-        new IceBall(this.playground, this, x, y, vx, vy, radius, color, speed, move_length, this.playground.height * 0.0042);
+        if(this.cur_iceball < 0.99){
+            return false;
+        } else{
+            let x = this.x, y = this.y;
+            let radius = this.playground.height * 0.01;
+            let angle = Math.atan2(ty - this.y, tx - this.x);
+            let vx = Math.cos(angle), vy = Math.sin(angle);
+            let color = "orange";
+            let speed = this.playground.height * 0.6;
+            let move_length = this.playground.height * 2;
+            new IceBall(this.playground, this, x, y, vx, vy, radius, color, speed, move_length, this.playground.height * 0.0042);
+            this.cur_iceball --;
+        }
+        
     }
 
     is_attacked(angle, damage, type) {
@@ -165,7 +186,50 @@ class Player extends xiwenGameObject {
         this.vy = Math.sin(this.angle);
     }
 
+    get_one_fireball() {
+        if(this.cur_fireball < this.fireball_max){
+            this.fireball_getting_time += this.timedelta / 1000;
+            let remainder = this.fireball_getting_time / this.fireball_cd;
+            this.fireball_getting_time %= this.fireball_cd;
+            this.cur_fireball += Math.floor(remainder / 1);
+        } else {
+            return false;
+        }
+        
+    }
+
+    get_one_iceball() {
+        if(this.cur_iceball < this.iceball_max) {
+            this.iceball_getting_time += this.timedelta / 1000;
+            let remainder = this.iceball_getting_time / this.iceball_cd;
+            this.iceball_getting_time %= this.iceball_cd;
+            this.cur_iceball += Math.floor(remainder / 1);
+        } else {
+            return false;
+        }
+        
+    }
+
+
     update() {
+        this.get_one_fireball();
+        this.get_one_iceball();
+        if(this.cur_fireball > 0.9 && this.fireball_counter === null) {
+            this.fireball_counter = new SkiilCounter("fireball", this.playground);
+        }
+        if(this.cur_iceball > 0.9 && this.iceball_counter === null) {
+            this.iceball_counter = new SkiilCounter("iceball", this.playground);
+        }
+        if(this.cur_fireball < this.eps && this.fireball_counter !== null) {
+            this.fireball_counter.color = "black";
+            this.fireball_counter.destroy();
+            this.fireball_counter = null;
+        }
+        if(this.cur_iceball < this.eps && this.iceball_counter !== null) {
+            this.iceball_counter.color = "black";
+            this.iceball_counter.destroy();
+            this.iceball_counter = null;
+        }
         this.color = this.const_color;
         this.speed = this.const_speed;
         if(this.fire_attached > this.eps) {
@@ -195,15 +259,15 @@ class Player extends xiwenGameObject {
             this.y += this.damage_y * this.damage_speed * this.timedelta / 1000*1.5;
             this.damage_speed *= this.friction;
         } else{
-            if(Math.random() < 1/300 && !this.is_me){
+            if(Math.random() < 1/250 && !this.is_me){
                 let player = this.playground.players[0];
                 let random = Math.random();
-                if(random < 0.2){
+                if(random < 0.05){
                     this.shoot_fireball(player.x, player.y);
-                } else if( random < 0.4){
+                } else if( random < 0.1){
                     this.shoot_iceball(player.x, player.y);
                 } else {
-                    let random_1 = Math.floor(Math.random() * 4);
+                    let random_1 = Math.floor(Math.random() * 5);
                     let random_2 = Math.random();
                     if(random_2 > 0.5){
                     this.shoot_fireball(this.playground.players[random_1].x, this.playground.players[random_1].y);
@@ -238,6 +302,7 @@ class Player extends xiwenGameObject {
 
         }
         if(this.radius < this.const_radius/3){
+            this.x = this.playground.width*2;
             this.destroy();
         }
         

@@ -19,7 +19,7 @@ class xiwenGameMenu {
     </div>
 </div>
         `)
-        //this.$menu.hide();
+        this.$menu.hide();
         this.root.$xiwen_game.append(this.$menu);
         this.$single_mode = this.$menu.find('.xiwen-game-menu-item-single-mode');
         this.$multi_mode = this.$menu.find('.xiwen-game-menu-item-multi-mode');
@@ -297,8 +297,18 @@ class GameMap extends xiwenGameObject {
         this.const_color = this.color;
         this.const_radius = this.radius;
         this.hitted_fireball = 0;
-
+        this.base_cd = 1;
+        this.fireball_cd = this.base_cd;
+        this.fireball_getting_time = 0;
+        this.iceball_cd = this.base_cd * 1.5;
+        this.iceball_getting_time = 0;
+        this.fireball_max = 3;
+        this.iceball_max = 2;
+        this.cur_fireball = 0;
+        this.cur_iceball = 0;
         this.cur_skill = null;
+        this.fireball_counter = null;
+        this.iceball_counter = null;
     }
 
     start() {
@@ -341,21 +351,26 @@ class GameMap extends xiwenGameObject {
     }
 
     shoot_fireball(tx, ty) {
-        console.log(this.hitted_fireball);
-        if(this.hitted_fireball <= 2) {
-            let x = this.x, y = this.y;
-            let radius = this.playground.height * 0.01;
-            let angle = Math.atan2(ty - this.y, tx - this.x);
-            let vx = Math.cos(angle), vy = Math.sin(angle);
-            let color = "orange";
-            let speed = this.playground.height * 0.6;
-            let move_length = this.playground.height * 1.5;
-            new FireBall(this.playground, this, x, y, vx, vy, radius, color, speed, move_length, this.playground.height * 0.0042 );
+        if(this.cur_fireball < 0.99) {
+            return false;
         } else {
-            this.hitted_fireball = 0;
-            this.shoot_sentence_ball(tx, ty);
-            
+            if(this.hitted_fireball < 2) {
+                let x = this.x, y = this.y;
+                let radius = this.playground.height * 0.01;
+                let angle = Math.atan2(ty - this.y, tx - this.x);
+                let vx = Math.cos(angle), vy = Math.sin(angle);
+                let color = "orange";
+                let speed = this.playground.height * 0.6;
+                let move_length = this.playground.height * 1.5;
+                new FireBall(this.playground, this, x, y, vx, vy, radius, color, speed, move_length, this.playground.height * 0.0042 );
+            } else {
+                this.hitted_fireball = 0;
+                this.shoot_sentence_ball(tx, ty);
+                
+            }
+            this.cur_fireball --;
         }
+        
     }
 
     shoot_sentence_ball(tx, ty) {
@@ -366,8 +381,8 @@ class GameMap extends xiwenGameObject {
         let color = "orange";
         let speed = this.playground.height * 0.8;
         let move_length = this.playground.height * 1.8;
-        let angle_1 = angle*1.1;
-        let angle_2 = angle*0.9;
+        let angle_1 = angle+0.1;
+        let angle_2 = angle-0.1;
         let vx_1 = Math.cos(angle_1);
         let vy_1 = Math.sin(angle_1);
         let vx_2 = Math.cos(angle_2);
@@ -378,14 +393,20 @@ class GameMap extends xiwenGameObject {
     }
 
     shoot_iceball(tx, ty) {
-        let x = this.x, y = this.y;
-        let radius = this.playground.height * 0.01;
-        let angle = Math.atan2(ty - this.y, tx - this.x);
-        let vx = Math.cos(angle), vy = Math.sin(angle);
-        let color = "orange";
-        let speed = this.playground.height * 0.6;
-        let move_length = this.playground.height * 2;
-        new IceBall(this.playground, this, x, y, vx, vy, radius, color, speed, move_length, this.playground.height * 0.0042);
+        if(this.cur_iceball < 0.99){
+            return false;
+        } else{
+            let x = this.x, y = this.y;
+            let radius = this.playground.height * 0.01;
+            let angle = Math.atan2(ty - this.y, tx - this.x);
+            let vx = Math.cos(angle), vy = Math.sin(angle);
+            let color = "orange";
+            let speed = this.playground.height * 0.6;
+            let move_length = this.playground.height * 2;
+            new IceBall(this.playground, this, x, y, vx, vy, radius, color, speed, move_length, this.playground.height * 0.0042);
+            this.cur_iceball --;
+        }
+        
     }
 
     is_attacked(angle, damage, type) {
@@ -436,7 +457,50 @@ class GameMap extends xiwenGameObject {
         this.vy = Math.sin(this.angle);
     }
 
+    get_one_fireball() {
+        if(this.cur_fireball < this.fireball_max){
+            this.fireball_getting_time += this.timedelta / 1000;
+            let remainder = this.fireball_getting_time / this.fireball_cd;
+            this.fireball_getting_time %= this.fireball_cd;
+            this.cur_fireball += Math.floor(remainder / 1);
+        } else {
+            return false;
+        }
+        
+    }
+
+    get_one_iceball() {
+        if(this.cur_iceball < this.iceball_max) {
+            this.iceball_getting_time += this.timedelta / 1000;
+            let remainder = this.iceball_getting_time / this.iceball_cd;
+            this.iceball_getting_time %= this.iceball_cd;
+            this.cur_iceball += Math.floor(remainder / 1);
+        } else {
+            return false;
+        }
+        
+    }
+
+
     update() {
+        this.get_one_fireball();
+        this.get_one_iceball();
+        if(this.cur_fireball > 0.9 && this.fireball_counter === null) {
+            this.fireball_counter = new SkiilCounter("fireball", this.playground);
+        }
+        if(this.cur_iceball > 0.9 && this.iceball_counter === null) {
+            this.iceball_counter = new SkiilCounter("iceball", this.playground);
+        }
+        if(this.cur_fireball < this.eps && this.fireball_counter !== null) {
+            this.fireball_counter.color = "black";
+            this.fireball_counter.destroy();
+            this.fireball_counter = null;
+        }
+        if(this.cur_iceball < this.eps && this.iceball_counter !== null) {
+            this.iceball_counter.color = "black";
+            this.iceball_counter.destroy();
+            this.iceball_counter = null;
+        }
         this.color = this.const_color;
         this.speed = this.const_speed;
         if(this.fire_attached > this.eps) {
@@ -466,15 +530,15 @@ class GameMap extends xiwenGameObject {
             this.y += this.damage_y * this.damage_speed * this.timedelta / 1000*1.5;
             this.damage_speed *= this.friction;
         } else{
-            if(Math.random() < 1/300 && !this.is_me){
+            if(Math.random() < 1/250 && !this.is_me){
                 let player = this.playground.players[0];
                 let random = Math.random();
-                if(random < 0.2){
+                if(random < 0.05){
                     this.shoot_fireball(player.x, player.y);
-                } else if( random < 0.4){
+                } else if( random < 0.1){
                     this.shoot_iceball(player.x, player.y);
                 } else {
-                    let random_1 = Math.floor(Math.random() * 4);
+                    let random_1 = Math.floor(Math.random() * 5);
                     let random_2 = Math.random();
                     if(random_2 > 0.5){
                     this.shoot_fireball(this.playground.players[random_1].x, this.playground.players[random_1].y);
@@ -509,6 +573,7 @@ class GameMap extends xiwenGameObject {
 
         }
         if(this.radius < this.const_radius/3){
+            this.x = this.playground.width*2;
             this.destroy();
         }
         
@@ -521,20 +586,55 @@ class GameMap extends xiwenGameObject {
         this.ctx.fillStyle = this.color; //这里少加一个ctx，建议学学canvas  //每一帧涂抹一次，效果实际上是覆盖，背景颜色的涂抹是半透明的，一次可以产生模糊的效果
         this.ctx.fill();
     }
+}class SkiilCounter extends xiwenGameObject {
+    constructor(type, playground) {
+        super();
+        this.type = type;
+        this.playground = playground;
+        this.ctx = this.playground.game_map.ctx;
+        this.color = "#F67D39";
+        this.radius = this.playground.height * 0.02;
+        if(this.type === "iceball") {
+            this.color = "#68D4D8";
+            this.x = this.playground.width * 0.46;
+            this.y = this.playground.height * 0.95;
+        }
+        if(this.type === "fireball") {
+            this.color = "#F67D39";
+            this.x = this.playground.width * 0.54;
+            this.y = this.playground.height * 0.95;
+        }
+        
+    }
+
+    update() {
+        this.render();
+    }
+
+    hide() {
+        this.hide();
+    }
+    render() {
+        this.ctx.beginPath();
+        this.ctx.arc(this.x, this.y, this.radius, 1, Math.PI * 2-1, false);
+        this.ctx.fillStyle = this.color;
+        this.ctx.fill(); 
+    }
+
 }class xiwenGamePlayground {
     constructor(root) {
         this.root = root;
 
         this.$playground = $(`<div class="xiwen-game-playground"></div>`);
 
-        this.hide();
+        //this.hide();
         this.root.$xiwen_game.append(this.$playground);
         this.width = this.$playground.width();
         this.height = this.$playground.height();
         this.game_map = new GameMap(this);
         this.players = [];
         this.players.push(new Player(this, this.width/2, this.height/2, this.height*0.05, "white", this.height*0.35, true));
-        let robot_nums = 3;
+        let robot_nums = 4;
         for(let i=1; i<robot_nums+1; i++){
             this.players[i] = new Player(this, this.width/2, this.height/2, this.height*0.05, "yellow", this.height*0.30, false);
         }
@@ -558,7 +658,7 @@ export class xiwenGame {
     constructor(id) {
         this.id = id; 
         this.$xiwen_game = $("#" + id);
-        this.menu = new xiwenGameMenu(this);
+        // this.menu = new xiwenGameMenu(this);
         this.playground = new xiwenGamePlayground(this);
         // this.settings = new this.xiwenGameSettings(this);
 
