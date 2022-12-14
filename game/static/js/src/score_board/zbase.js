@@ -1,7 +1,7 @@
 class ScoreBoard {
     constructor(root) {
         this.root = root;
-        this.board_header = "<div class='xiwen-game-menu'><div class='xiwen-game-score-board'>"
+        this.board_header = "<div class='xiwen-game-board'><div class='xiwen-game-score-board'>"
         this.board_tail = "</div></div>"
         this.board_title = "<div class='xiwen-game-score-board-title'>" + this.win_lose + "</div>"
         this.board_time = "<div class='xiwen-game-score-board-item'> 花费时间：" + this.time + "s </div>";
@@ -20,7 +20,7 @@ class ScoreBoard {
         this.time = Math.floor(time);
         this.win_lose = win_lose;
         this.damage_sum = Math.floor(damage_sum);
-        this.board_header = "<div class='xiwen-game-menu'><div class='xiwen-game-score-board'>"
+        this.board_header = "<div class='xiwen-game-board'><div class='xiwen-game-score-board'>"
         this.board_tail = "</div></div>"
         this.board_title = "<div class='xiwen-game-score-board-title'>" + this.win_lose + "</div>"
         this.board_time = "<div class='xiwen-game-score-board-item'> 花费时间：" + this.time + "s </div>";

@@ -151,7 +151,7 @@ class Player extends xiwenGameObject {
         }
         this.damage_x = Math.cos(angle);
         this.damage_y = Math.sin(angle);
-        this.damage_speed = damage * 120;
+        this.damage_speed = damage * 90;
         this.speed *= 1.1;
         if(type === "fireball" && this.ice_attached > this.eps) {
             this.damage_speed *= 2;
@@ -301,38 +301,31 @@ class Player extends xiwenGameObject {
             }
         }
         //修复出界问题
-        if(this.x <= -10 || this.x >= this.playground.width*1.01 || this.y <= -10 || this.y >= this.playground.height*1.01) {
-            this.vx = this.vx;
-            this.vy = this.vy;
-            this.damage_speed = 0;
-            this.destroy();
+        if(this.x <= 0 || this.x >= this.playground.width || this.y <= 0 || this.y >= this.playground.height) {
             this.is_dead = true;
             if(this.is_me) {
                 this.playground.hide();
                 this.playground.root.score_board.show(this.end_time, this.damage_sum, "lose");
             }
+            this.destroy();
+            DEAD_PLAYER_NUMS ++;
         }
+
         if(this.radius < this.const_radius/4){
             this.x = this.playground.width*2;
-            this.destroy();
-            this.is_dead = true;
             if(this.is_me) {
                 this.playground.hide();
                 this.playground.root.score_board.show(this.end_time, this.damage_sum, "lose");
             }
+            this.destroy();
+            DEAD_PLAYER_NUMS ++;
         }
-        for(let i=1; i<this.playground.players.length; i++) {
-            let player = this.playground.players[i];
-            if(player.is_dead && !player.dead_counted){
-                this.dead_opponent ++;
-                player.dead_counted = true;
-            }
-        }
-        if(this.dead_opponent >= this.playground.players.length-1) {
+        if(DEAD_PLAYER_NUMS >= this.playground.players.length-1) {
             this.playground.hide();
             this.playground.root.score_board.show(this.end_time, this.damage_sum, "win");
         }
         this.render();
+
     }
 
     render() { //draw a sphere

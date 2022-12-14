@@ -1,6 +1,6 @@
 //shouzimu must be a to cpmpress in first place
 let XIWEN_GAME_OBJECT = []; //将创建实例添加到全局变量中
-
+let DEAD_PLAYER_NUMS = 0;
 class xiwenGameObject {
     constructor() {
         XIWEN_GAME_OBJECT.push(this);
