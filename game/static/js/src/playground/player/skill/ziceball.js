@@ -12,6 +12,7 @@ class IceBall extends Balls {
         let angle = Math.atan2(player.y - this.y, player.x - this.x);
         player.is_attacked(angle, this.damage);
         player.get_ice_attached();
+        this.player.damage_sum += this.damage;
         this.destroy();
     }
 }

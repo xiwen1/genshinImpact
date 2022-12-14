@@ -38,6 +38,11 @@ class Player extends xiwenGameObject {
         this.cur_skill = null;
         this.fireball_counter = null;
         this.iceball_counter = null;
+        this.end_time = 0;
+        this.damage_sum = 0;
+        this.is_dead = false;
+        this.dead_opponent = 0;
+        this.dead_counted = false;
     }
 
     start() {
@@ -214,6 +219,7 @@ class Player extends xiwenGameObject {
     update() {
         this.get_one_fireball();
         this.get_one_iceball();
+        this.end_time += this.timedelta / 1000;
         if(this.cur_fireball > 0.9 && this.fireball_counter === null) {
             this.fireball_counter = new SkiilCounter("fireball", this.playground);
         }
@@ -259,15 +265,15 @@ class Player extends xiwenGameObject {
             this.y += this.damage_y * this.damage_speed * this.timedelta / 1000*1.5;
             this.damage_speed *= this.friction;
         } else{
-            if(Math.random() < 1/250 && !this.is_me){
+            if(Math.random() < 1/200 && !this.is_me){
                 let player = this.playground.players[0];
                 let random = Math.random();
-                if(random < 0.05){
+                if(random < 0.1){
                     this.shoot_fireball(player.x, player.y);
-                } else if( random < 0.1){
+                } else if( random < 0.2){
                     this.shoot_iceball(player.x, player.y);
                 } else {
-                    let random_1 = Math.floor(Math.random() * 5);
+                    let random_1 = Math.floor(Math.random() * this.playground.players.length);
                     let random_2 = Math.random();
                     if(random_2 > 0.5){
                     this.shoot_fireball(this.playground.players[random_1].x, this.playground.players[random_1].y);
@@ -295,17 +301,37 @@ class Player extends xiwenGameObject {
             }
         }
         //修复出界问题
-        if(this.x <= 0 || this.x >= this.playground.width || this.y <= 0 || this.y >= this.playground.height) {
-            this.vx = -this.vx;
-            this.vy = -this.vy;
+        if(this.x <= -10 || this.x >= this.playground.width*1.01 || this.y <= -10 || this.y >= this.playground.height*1.01) {
+            this.vx = this.vx;
+            this.vy = this.vy;
             this.damage_speed = 0;
-
+            this.destroy();
+            this.is_dead = true;
+            if(this.is_me) {
+                this.playground.hide();
+                this.playground.root.score_board.show(this.end_time, this.damage_sum, "lose");
+            }
         }
-        if(this.radius < this.const_radius/3){
+        if(this.radius < this.const_radius/4){
             this.x = this.playground.width*2;
             this.destroy();
+            this.is_dead = true;
+            if(this.is_me) {
+                this.playground.hide();
+                this.playground.root.score_board.show(this.end_time, this.damage_sum, "lose");
+            }
         }
-        
+        for(let i=1; i<this.playground.players.length; i++) {
+            let player = this.playground.players[i];
+            if(player.is_dead && !player.dead_counted){
+                this.dead_opponent ++;
+                player.dead_counted = true;
+            }
+        }
+        if(this.dead_opponent >= this.playground.players.length-1) {
+            this.playground.hide();
+            this.playground.root.score_board.show(this.end_time, this.damage_sum, "win");
+        }
         this.render();
     }
 

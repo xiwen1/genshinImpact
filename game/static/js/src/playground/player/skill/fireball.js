@@ -13,6 +13,7 @@ class FireBall extends Balls {
         let angle = Math.atan2(player.y - this.y, player.x - this.x);
         player.is_attacked(angle, this.damage, this.type);
         player.get_fire_attached();
+        this.player.damage_sum += this.damage;
         this.player.hitted_fireball++;
         this.destroy();
     }

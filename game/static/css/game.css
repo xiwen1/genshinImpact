@@ -12,6 +12,37 @@
     left: 20%;
 }
 
+.xiwen-game-score-board {
+    width: 40vh;
+    top: 15%;
+    position: relative;
+    margin: 0 auto;
+}
+
+.xiwen-game-score-board-title {
+    color: white;
+    font-size: 4vh;
+    font-style: italic;
+    background-color: rgba(39, 21, 28, 0.6);
+    border-radius: 15px;
+    letter-spacing: 0.5vw;
+    cursor: pointer;
+    padding: 0.5vh;
+    text-align: center;
+}
+
+.xiwen-game-score-board-item {
+    color: white;
+    font-size: 3vh;
+    font-style: italic;
+    background-color: rgba(39, 21, 28, 0.6);
+    border-radius: 15px;
+    letter-spacing: 0.5vw;
+    cursor: pointer;
+    padding: 0.5vh;
+    text-align: center;
+}
+
 .xiwen-game-menu-item {
     color: white;
     height: 6vh;
