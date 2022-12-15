@@ -325,6 +325,7 @@ class Player extends xiwenGameObject {
             this.playground.root.score_board.show(this.end_time, this.damage_sum, "win");
         }
         this.render();
+        console.log(DEAD_PLAYER_NUMS);
 
     }
 
