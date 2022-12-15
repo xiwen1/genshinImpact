@@ -4,8 +4,8 @@ class xiwenGameMenu {
         this.$menu = $(`
 <div class="xiwen-game-menu">
         <br>
-    <h1 style="text-align: center; color: white">zkw's咒术回战</h1>
-    <a href="whu"><h3 style="text-align: center; color: olive">ad:点此进入武大传送门，欢迎报考武汉大学！</h3></a>
+    <h1 style="text-align: center; color: #D971CB; font-size:8vh">zkw's原神大乱斗</h1>
+    <a href="whu"><h3 style="text-align: center; color: #CD5ABD">ad:点此进入武大传送门，欢迎报考武汉大学！</h3></a>
     <div class="xiwen-game-menu-field">
         <div class="xiwen-game-menu-item xiwen-game-menu-item-single-mode">
             单人模式
