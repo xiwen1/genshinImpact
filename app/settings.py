@@ -17,6 +17,7 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -26,7 +27,7 @@ SECRET_KEY = 'django-insecure-5rxxn_pj_$#+hr$1p69ltuc5rqln#-_v9&szfqcfj2lw*w7zf^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["114.55.29.194"]
+ALLOWED_HOSTS = ["114.55.29.194", "app4220.acapp.acwing.com.cn"]
 
 
 # Application definition
@@ -123,7 +124,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STAIC_ROOT = os.path.join(BASE_DIR, "static") # 将static文件夹映射到网址的static中
+STATIC_ROOT = os.path.join(BASE_DIR, "static") # 将static文件夹映射到网址的static中
 STATIC_URL = '/static/'
  
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # 同理
