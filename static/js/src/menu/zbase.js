@@ -4,7 +4,7 @@ class xiwenGameMenu {
         this.$menu = $(`
 <div class="xiwen-game-menu">
         <br>
-    <h1 style="text-align: center; color: #D971CB; font-size:8vh">zkw's原神大乱斗</h1>
+    <h1 style="text-align: center; color:#E24B0D; font-size:8vh">zkw's原神大乱斗</h1>
     <a href="whu"><h3 style="text-align: center; color: #CD5ABD">ad:点此进入武大传送门，欢迎报考武汉大学！</h3></a>
     <div class="xiwen-game-menu-field">
         <div class="xiwen-game-menu-item xiwen-game-menu-item-single-mode">
@@ -25,6 +25,7 @@ class xiwenGameMenu {
         this.$multi_mode = this.$menu.find('.xiwen-game-menu-item-multi-mode');
         this.$settings = this.$menu.find('.xiwen-game-menu-item-settings');
         this.start();
+        this.hide();
     }
     
     start() {

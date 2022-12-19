@@ -43,6 +43,11 @@ class Player extends xiwenGameObject {
         this.is_dead = false;
         this.dead_opponent = 0;
         this.dead_counted = false;
+        if (this.is_me) {
+            this.img = new Image();
+            this.img.src = this.playground.root.settings.photo;
+            
+        }
     }
 
     start() {
@@ -241,13 +246,13 @@ class Player extends xiwenGameObject {
         if(this.fire_attached > this.eps) {
             this.color = "orange";
             if(this.is_me){
-                this.color = "#FFFF99"
+                this.color = "rgba(226, 103, 87, 0.4)"
             }
             this.fire_attached -= this.timedelta/1000;
         } else if(this.ice_attached > this.eps) {
             this.color = "#00FFFF";
             if(this.is_me) {
-                this.color = "#CCFFFF";
+                this.color = "rgba(93, 246, 230, 0.4)";
             }
             this.ice_attached -= this.timedelta/1000;
             this.speed = this.iced_speed;
@@ -311,7 +316,7 @@ class Player extends xiwenGameObject {
             DEAD_PLAYER_NUMS ++;
         }
 
-        if(this.radius < this.const_radius/4){
+        if(this.radius < this.const_radius/3){
             this.x = this.playground.width*2;
             if(this.is_me) {
                 this.playground.hide();
@@ -330,6 +335,16 @@ class Player extends xiwenGameObject {
     }
 
     render() { //draw a sphere
+        if(this.is_me) {
+            this.ctx.save();
+            this.ctx.beginPath();
+            this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+            this.ctx.stroke();
+            this.ctx.clip();
+            this.ctx.drawImage(this.img, this.x - this.radius, this.y - this.radius, this.radius * 2, this.radius * 2); 
+            this.ctx.restore();
+            this.ctx.fillStyle = this.color; 
+        }
         this.ctx.beginPath();
         this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
         this.ctx.fillStyle = this.color; //这里少加一个ctx，建议学学canvas  //每一帧涂抹一次，效果实际上是覆盖，背景颜色的涂抹是半透明的，一次可以产生模糊的效果

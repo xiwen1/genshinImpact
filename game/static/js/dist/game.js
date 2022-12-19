@@ -4,7 +4,7 @@ class xiwenGameMenu {
         this.$menu = $(`
 <div class="xiwen-game-menu">
         <br>
-    <h1 style="text-align: center; color: #D971CB; font-size:8vh">zkw's原神大乱斗</h1>
+    <h1 style="text-align: center; color:#E24B0D; font-size:8vh">zkw's原神大乱斗</h1>
     <a href="whu"><h3 style="text-align: center; color: #CD5ABD">ad:点此进入武大传送门，欢迎报考武汉大学！</h3></a>
     <div class="xiwen-game-menu-field">
         <div class="xiwen-game-menu-item xiwen-game-menu-item-single-mode">
@@ -25,6 +25,7 @@ class xiwenGameMenu {
         this.$multi_mode = this.$menu.find('.xiwen-game-menu-item-multi-mode');
         this.$settings = this.$menu.find('.xiwen-game-menu-item-settings');
         this.start();
+        this.hide();
     }
     
     start() {
@@ -317,6 +318,11 @@ class GameMap extends xiwenGameObject {
         this.is_dead = false;
         this.dead_opponent = 0;
         this.dead_counted = false;
+        if (this.is_me) {
+            this.img = new Image();
+            this.img.src = this.playground.root.settings.photo;
+            
+        }
     }
 
     start() {
@@ -515,13 +521,13 @@ class GameMap extends xiwenGameObject {
         if(this.fire_attached > this.eps) {
             this.color = "orange";
             if(this.is_me){
-                this.color = "#FFFF99"
+                this.color = "rgba(226, 103, 87, 0.4)"
             }
             this.fire_attached -= this.timedelta/1000;
         } else if(this.ice_attached > this.eps) {
             this.color = "#00FFFF";
             if(this.is_me) {
-                this.color = "#CCFFFF";
+                this.color = "rgba(93, 246, 230, 0.4)";
             }
             this.ice_attached -= this.timedelta/1000;
             this.speed = this.iced_speed;
@@ -585,7 +591,7 @@ class GameMap extends xiwenGameObject {
             DEAD_PLAYER_NUMS ++;
         }
 
-        if(this.radius < this.const_radius/4){
+        if(this.radius < this.const_radius/3){
             this.x = this.playground.width*2;
             if(this.is_me) {
                 this.playground.hide();
@@ -604,6 +610,16 @@ class GameMap extends xiwenGameObject {
     }
 
     render() { //draw a sphere
+        if(this.is_me) {
+            this.ctx.save();
+            this.ctx.beginPath();
+            this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+            this.ctx.stroke();
+            this.ctx.clip();
+            this.ctx.drawImage(this.img, this.x - this.radius, this.y - this.radius, this.radius * 2, this.radius * 2); 
+            this.ctx.restore();
+            this.ctx.fillStyle = this.color; 
+        }
         this.ctx.beginPath();
         this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
         this.ctx.fillStyle = this.color; //这里少加一个ctx，建议学学canvas  //每一帧涂抹一次，效果实际上是覆盖，背景颜色的涂抹是半透明的，一次可以产生模糊的效果
@@ -666,7 +682,7 @@ class GameMap extends xiwenGameObject {
         this.height = this.$playground.height();
         this.game_map = new GameMap(this);
         this.players = [];
-        this.players.push(new Player(this, this.width/2, this.height/2, this.height*0.05, "white", this.height*0.35, true));
+        this.players.push(new Player(this, this.width/2, this.height/2, this.height*0.05, "rgba(0, 0, 0, 0)", this.height*0.35, true));
         let robot_nums = 5;
         for(let i=1; i<robot_nums+1; i++){
             this.players[i] = new Player(this, this.width/2, this.height/2, this.height*0.05, "yellow", this.height*0.30, false);
@@ -712,13 +728,65 @@ class ScoreBoard {
     hide() {
         this.$score_board.hide();
     }
+}class Settings {
+    constructor(root) {
+        this.root = root;
+        this.platform = "web";
+        this.username = "";
+        this.photo = "";
+        if(this.root.AcWingOS) this.platform = "acapp";
+
+        this.start();
+    }
+
+    start() {
+        this.getinfo();
+    }
+    login() { //打开登陆界面
+
+    }
+
+    register() {// 打开注册界面
+
+    }
+
+    getinfo() {
+        let outer = this;
+        $.ajax({
+            url: "https://app4220.acapp.acwing.com.cn/settings/getinfo/",
+            type: "GET",
+            data: {
+                platform: outer.platform,
+            },
+            success: function(resp) {
+                console.log(resp);
+                if(resp.result === "success") {
+                    outer.hide();
+                    outer.username = resp.username;
+                    outer.photo = resp.photo;
+                    outer.root.menu.show();
+                } else {
+                    outer.login();
+                }
+            }
+        });
+    }
+
+    hide() {
+        
+    }
+
+    show() {
+
+    }
 }export class xiwenGame {
-    constructor(id) {
+    constructor(id, AcGameOS) {
         this.id = id; 
         this.$xiwen_game = $("#" + id);
+        this.settings = new Settings(this);
         this.menu = new xiwenGameMenu(this);
+        this.AcGameOS = AcGameOS;
         this.playground = new xiwenGamePlayground(this);
-        //this.settings = new xiwenGameSettings(this);
         this.score_board = new ScoreBoard(this); 
 
         this.start();
