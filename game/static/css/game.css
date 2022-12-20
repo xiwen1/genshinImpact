@@ -54,6 +54,45 @@
     width: 90%;
 }
 
+.xiwen-game-change-photo {
+    width: 30%;
+    height: 18%;
+    position: relative;
+    transform: translate(-50%, -50%);
+    top: 20%;
+    left: 50%;
+
+}
+
+.xiwen-game-change-photo > input {
+    position: relative;
+    margin: 0 auto;
+    padding: 1vh;
+    margin-top: 0.7vh;
+    line-height: 3.5vh;
+    display: block;
+    width: 90%;
+}
+
+.xiwen-game-change-photo > div {
+    display: block;
+    margin: 2vh;
+    padding: 2vh;
+}
+
+.xiwen-game-change-photo > div > button {
+    position: relative;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    line-height: 4vh;
+    width: 60%;
+    color: white;
+    background-color: rgb(141, 159, 25);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 .xiwen-game-settings-item > button {
     position: relative;
     top: 50%;
@@ -129,7 +168,7 @@
 .xiwen-game-menu-field {
     width: 20vh;
     position: relative;
-    top: 35%;
+    top: 20%;
     left: 20%;
 }
 
@@ -174,7 +213,7 @@
     border-radius: 15px;
     letter-spacing: 0.5vw;
     cursor: pointer;
-    padding: 0.5vh;
+    padding: 0.7vh;
     text-align: center;
 
 }

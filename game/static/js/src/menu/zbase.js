@@ -14,8 +14,15 @@ class xiwenGameMenu {
             多人模式
         </div><br>
         <div class="xiwen-game-menu-item xiwen-game-menu-item-settings">
-            设置
+            设置(退出登录)
+        </div><br>
+        <div class="xiwen-game-menu-item xiwen-game-menu-item-change-photo">
+            修改头像
         </div>
+    </div>
+    <div class="xiwen-game-change-photo">
+        <input type="text" placeholder="此处填写你心仪头像的网页链接(不填写则使用默认绫华头像)">
+        <div class="change-photo-submit"><button>确认</button></div>
     </div>
 </div>
         `)
@@ -24,6 +31,11 @@ class xiwenGameMenu {
         this.$single_mode = this.$menu.find('.xiwen-game-menu-item-single-mode');
         this.$multi_mode = this.$menu.find('.xiwen-game-menu-item-multi-mode');
         this.$settings = this.$menu.find('.xiwen-game-menu-item-settings');
+        this.$change_photo = this.$menu.find('.xiwen-game-menu-item-change-photo');
+        this.$change_photo_links = this.$menu.find('.xiwen-game-change-photo');
+        this.$menu_field = this.$menu.find('.xiwen-game-menu-field');
+        this.$photo_link = this.$menu.find('.xiwen-game-change-photo input')
+        this.$change_photo_submit = this.$menu.find('.change-photo-submit');
         this.start();
         this.hide();
     }
@@ -31,6 +43,7 @@ class xiwenGameMenu {
     start() {
         this.add_listening_events(); //添加监听函数（监听鼠标操作）
         this.$menu.show();
+        this.$change_photo_links.hide();
     }
 
     add_listening_events() {
@@ -44,10 +57,51 @@ class xiwenGameMenu {
             outer.root.playground.show("multi mode");
         })
         this.$settings.click(function(){
-            outer.hide();
-            outer.root.settings.show();
+            console.log("click settings");
+            outer.root.settings.logout_on_remote();
+        })
+        this.$change_photo.click(function() {
+            outer.$menu_field.hide();
+            outer.$change_photo_links.show();
+            outer.add_listening_events_photo();
+        })
+        
+        
+    }
+
+    add_listening_events_photo() {
+        let outer = this;
+        this.$change_photo_submit.click(function() {
+            outer.change_photo();
         })
     }
+
+    change_photo() {
+        let outer = this;
+        let photo = this.$photo_link.val();
+        $.ajax({
+            url: "https://app4220.acapp.acwing.com.cn/settings/change_photo/",
+            type: "GET",
+            data: {
+                photo: photo,
+            },
+            success: function(resp) {
+                console.log(resp);
+                if(resp.result === "default") {
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 2000);
+                    window.alert("将使用默认头像，2秒后自动刷新")
+                } else {
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 2000);
+                    window.alert("修改成功，将于两秒后自动刷新")
+                }
+            }
+        })
+    }
+
 
     show() {
         this.$menu.show();

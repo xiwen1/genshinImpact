@@ -14,8 +14,15 @@ class xiwenGameMenu {
             多人模式
         </div><br>
         <div class="xiwen-game-menu-item xiwen-game-menu-item-settings">
-            设置
+            设置(退出登录)
+        </div><br>
+        <div class="xiwen-game-menu-item xiwen-game-menu-item-change-photo">
+            修改头像
         </div>
+    </div>
+    <div class="xiwen-game-change-photo">
+        <input type="text" placeholder="此处填写你心仪头像的网页链接(不填写则使用默认绫华头像)">
+        <div class="change-photo-submit"><button>确认</button></div>
     </div>
 </div>
         `)
@@ -24,6 +31,11 @@ class xiwenGameMenu {
         this.$single_mode = this.$menu.find('.xiwen-game-menu-item-single-mode');
         this.$multi_mode = this.$menu.find('.xiwen-game-menu-item-multi-mode');
         this.$settings = this.$menu.find('.xiwen-game-menu-item-settings');
+        this.$change_photo = this.$menu.find('.xiwen-game-menu-item-change-photo');
+        this.$change_photo_links = this.$menu.find('.xiwen-game-change-photo');
+        this.$menu_field = this.$menu.find('.xiwen-game-menu-field');
+        this.$photo_link = this.$menu.find('.xiwen-game-change-photo input')
+        this.$change_photo_submit = this.$menu.find('.change-photo-submit');
         this.start();
         this.hide();
     }
@@ -31,6 +43,7 @@ class xiwenGameMenu {
     start() {
         this.add_listening_events(); //添加监听函数（监听鼠标操作）
         this.$menu.show();
+        this.$change_photo_links.hide();
     }
 
     add_listening_events() {
@@ -44,10 +57,51 @@ class xiwenGameMenu {
             outer.root.playground.show("multi mode");
         })
         this.$settings.click(function(){
-            outer.hide();
-            outer.root.settings.show();
+            console.log("click settings");
+            outer.root.settings.logout_on_remote();
+        })
+        this.$change_photo.click(function() {
+            outer.$menu_field.hide();
+            outer.$change_photo_links.show();
+            outer.add_listening_events_photo();
+        })
+        
+        
+    }
+
+    add_listening_events_photo() {
+        let outer = this;
+        this.$change_photo_submit.click(function() {
+            outer.change_photo();
         })
     }
+
+    change_photo() {
+        let outer = this;
+        let photo = this.$photo_link.val();
+        $.ajax({
+            url: "https://app4220.acapp.acwing.com.cn/settings/change_photo/",
+            type: "GET",
+            data: {
+                photo: photo,
+            },
+            success: function(resp) {
+                console.log(resp);
+                if(resp.result === "default") {
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 2000);
+                    window.alert("将使用默认头像，2秒后自动刷新")
+                } else {
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 2000);
+                    window.alert("修改成功，将于两秒后自动刷新")
+                }
+            }
+        })
+    }
+
 
     show() {
         this.$menu.show();
@@ -738,7 +792,7 @@ class ScoreBoard {
         this.$settings = $(`
             <div class="xiwen-game-settings">
                 <div class="xiwen-game-settings-login">
-                    <div class="xiwen-game-settings-title">登陆</div>
+                    <div class="xiwen-game-settings-title">登录</div>
                     <div class="xiwen-game-settings-username">
                         <div class="xiwen-game-settings-item">
                             <input type="text" placeholder="用户名">
@@ -763,7 +817,7 @@ class ScoreBoard {
                     <div class="xiwen-game-settings-acwing">
                         <img width="30" src="https://app4220.acapp.acwing.com.cn/static/image/settings/acwing_logo.png">
                         <div>
-                            Acwing一键登陆
+                            Acwing一键登录
                         </div>
                     </div>
                 </div>
@@ -774,12 +828,12 @@ class ScoreBoard {
                             <input type="text" placeholder="用户名">
                         </div>
                     </div>
-                    <div class="xiwen-game-settings-password">
+                    <div class="xiwen-game-settings-password xiwen-game-settings-password-first">
                         <div class="xiwen-game-settings-item">
                             <input type="password" placeholder="密码">
                         </div>
                     </div>
-                    <div class="xiwen-game-settings-password">
+                    <div class="xiwen-game-settings-password xiwen-game-settings-password-second">
                         <div class="xiwen-game-settings-item">
                             <input type="password" placeholder="确认密码">
                         </div>
@@ -798,7 +852,7 @@ class ScoreBoard {
                     <div class="xiwen-game-settings-acwing">
                         <img width="30" src="https://app4220.acapp.acwing.com.cn/static/image/settings/acwing_logo.png">
                         <div>
-                            Acwing一键登陆
+                            Acwing一键登录
                         </div>
                     </div>
                 </div>
@@ -806,15 +860,121 @@ class ScoreBoard {
         `);
         this.root.$xiwen_game.append(this.$settings);
         this.$login = this.$settings.find(".xiwen-game-settings-login");
+        this.$login_username = this.$login.find(".xiwen-game-settings-username input");
+        this.$login_password = this.$login.find(".xiwen-game-settings-password input");
+        this.$login_submit = this.$login.find(".xiwen-game-settings-submit button");
+        this.$login_error_message = this.$login.find(".xiwen-game-settings-error-message");
+        this.$login_register = this.$login.find(".xiwen-game-settings-goto-register");
         this.$login.hide();
         this.$register = this.$settings.find(".xiwen-game-settings-register");
-        this.$register.show();
+        this.$register_username = this.$register.find(".xiwen-game-settings-username input");
+        this.$register_password = this.$register.find(".xiwen-game-settings-password-first input");
+        this.$register_password_confirm = this.$register.find(".xiwen-game-settings-password-second input");
+        this.$register_error_message = this.$register.find(".xiwen-game-settings-error-message");
+        this.$register_submit = this.$register.find(".xiwen-game-settings-submit");
+        this.$register_login = this.$register.find(".xiwen-game-settings-goto-register");
+        this.$register.hide();
         this.start();
     }
 
     start() {
         this.getinfo();
+        this.add_listening_events();
     }
+
+    add_listening_events() { //绑定监听函数
+        this.add_listening_events_login();
+        this.add_listening_events_register();
+    }
+
+    add_listening_events_login() {
+        let outer = this;
+
+        this.$login_register.click(function() {
+            outer.register();
+        })
+
+        this.$login_submit.click(function() {
+            outer.login_on_remote();
+        })
+    }
+
+    add_listening_events_register() {
+        let outer = this;
+
+        this.$register_login.click(function() {
+            outer.login();
+        });
+        this.$register_submit.click(function() {
+            outer.register_on_remote();
+        });
+    }
+
+    login_on_remote() { //在远程服务器上登录
+        let outer = this;
+        let username = this.$login_username.val();
+        let password = this.$login_password.val();
+        this.$login_error_message.empty();
+
+        $.ajax({
+            url: "https://app4220.acapp.acwing.com.cn/settings/login/",
+            type: "GET",
+            data: {
+                username: username,
+                password: password,
+            },
+            success: function(resp) {
+                console.log(resp);
+                if(resp.result === "success") {
+                    location.reload();  //刷新页面
+                } else {
+                    outer.$login_error_message.html(resp.result);
+                }
+            }
+        });
+    }
+
+    register_on_remote() { //在远程服务器上注册
+        let outer = this;
+        let username = this.$register_username.val();
+        let password = this.$register_password.val();
+        let password_confirm = this.$register_password_confirm.val();
+        this.$register_error_message.empty();
+
+        $.ajax({
+            url: "https://app4220.acapp.acwing.com.cn/settings/register/",
+            type: "GET",
+            data: {
+                username: username,
+                password: password,
+                password_confirm: password_confirm,
+            },
+            success: function(resp) {
+                console.log(resp);
+                if(resp.result === "success") {
+                    location.reload();
+                } else {
+                    outer.$register_error_message.html(resp.result);
+                }
+            }
+        })
+    }
+
+    logout_on_remote() { //在远程服务器上登出
+        if(this.platform === "acapp") return false;
+
+        $.ajax({
+            url: "https://app4220.acapp.acwing.com.cn/settings/logout/",
+            type: "GET",
+            success: function(resp) {
+                console.log(resp);
+                if(resp.result === "success") {
+                    location.reload();
+                }
+            }
+        });
+    }
+
     login() { //打开登陆界面
         this.$register.hide();
         this.$login.show();
@@ -841,7 +1001,7 @@ class ScoreBoard {
                     outer.photo = resp.photo;
                     outer.root.menu.show();
                 } else {
-                    outer.register();
+                    outer.login();
                 }
             }
         });
