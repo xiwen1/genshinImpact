@@ -20,7 +20,7 @@ class SkiilCounter extends xiwenGameObject {
     }
 
     update() {
-        this.render();
+        // this.render();
     }
 
     hide() {

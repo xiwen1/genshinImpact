@@ -80,7 +80,7 @@ class xiwenGameMenu {
         let outer = this;
         let photo = this.$photo_link.val();
         $.ajax({
-            url: "https://app4220.acapp.acwing.com.cn/settings/change_photo/",
+            url: "https://app4286.acapp.acwing.com.cn/settings/change_photo/",
             type: "GET",
             data: {
                 photo: photo,

@@ -2,7 +2,7 @@
 
 ## 年轻人的第一个web项目
 
-### 登陆游戏请使用网址：https://app4220.acapp.acwing.com.cn/
+### 登陆游戏请使用网址：https://app4286.acapp.acwing.com.cn/
 
 ### 玩法说明：
 1. 鼠标右键点击移动
